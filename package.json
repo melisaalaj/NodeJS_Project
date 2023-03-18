@@ -10,6 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "seed": "node dist/common/db/seeds/seeder",
     "seed:user": "node dist/common/db/seeds/users/create-users.seed",
+    "seed:role": "node dist/common/db/seeds/roles/create-role.seed",
     "seed:refresh": "node dist/common/db/seeds/seeder --refresh",
     "start": "nest start",
     "dev": "nest start --watch",

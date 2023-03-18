@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -13,9 +12,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { IUserController } from './interfaces/user.controller.interface';
-import { PermissionsGuard } from '../../common/guards/permissions.guard';
-import { Permission } from '../../common/decorators/permissions.decorator';
-import { UserPermissions } from './enums/permissions.enum';
 import { GetCurrentUser } from '../../common/decorators/get-current-user.decorator';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -28,19 +24,19 @@ import { UserRoles } from './enums/roles.enum';
 import { PaginationInterceptor } from '../../common/interceptors/pagination.interceptor';
 import { ForgotPasswordDto, ResetPasswordDto } from './dtos/password-reset.dto';
 import { Public } from '../../common/decorators/public.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
 
 @Controller('user')
 @ApiBearerAuth()
 @ApiTags('User')
 @UsePipes(new ValidationPipe())
-@UseInterceptors(ClassSerializerInterceptor)
-// @UseGuards(PermissionsGuard)
+@UseGuards(RolesGuard)
+// @UseInterceptors(ClassSerializerInterceptor)
 export class UserController implements IUserController {
   constructor(private readonly usersService: UserService) {}
 
   //example how permissions work
-  // @Permission(UserPermissions.CAN_ACCESS_HELLO_METHOD)
-  @Public()
+  //@Permission(UserPermissions.CAN_ACCESS_HELLO_METHOD)
   @Get('hello')
   async getHello() {
     return `Hello from Hello Method`;
@@ -58,14 +54,14 @@ export class UserController implements IUserController {
   }
 
   // example how roles work
-  @Roles(UserRoles.USER)
+  @Roles(UserRoles.ADMIN)
   @Get(':userId')
   async findOne(@Param('userId') userId: string): Promise<User> {
     return await this.usersService.findOne(userId);
   }
 
-  @Roles(UserRoles.USER)
   @Get()
+  @Roles(UserRoles.ADMIN)
   @UseInterceptors(PaginationInterceptor)
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();

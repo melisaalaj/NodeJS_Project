@@ -1,10 +1,12 @@
 /* eslint-disable prettier/prettier */
+import { User } from 'src/api/user/entities/user.entity';
 import { AuditEntity } from 'src/common/db/customBaseEntites/AuditEntity';
-import { Column, Entity } from 'typeorm';
-import { ProjectType } from '../enums/types.enum';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Type } from '../enums/types.enum';
 
 @Entity('projects')
 export class Project extends AuditEntity{
+
     @Column({ unique: true }) 
     url: string;
 
@@ -13,8 +15,12 @@ export class Project extends AuditEntity{
 
     @Column({ 
         type: 'enum',
-        enum: ProjectType,
-        default: ProjectType.TENTATIVE
+        enum: Type,
+        default: Type.TENTATIVE
     })
-    type: ProjectType;
+    type: Type;
+
+    @ManyToMany(() => User)
+    @JoinTable()
+    users: User[];
 }
