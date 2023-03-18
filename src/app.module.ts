@@ -16,6 +16,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ProjectModule } from './api/project/project.module';
 import { RoleModule } from './api/role/role.module';
+import { TaskModule } from './api/task/task.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { RoleModule } from './api/role/role.module';
     UserModule,
     ProjectModule,
     RoleModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [

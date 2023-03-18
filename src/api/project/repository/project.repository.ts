@@ -17,6 +17,7 @@ export class ProjectRepository
   createProject(data: CreateProjectDto): Promise<Project> {
     throw new Error('Method not implemented.');
   }
+  
   async getProject(): Promise<Project[]> {
     return await this.find();
   }
@@ -36,12 +37,15 @@ export class ProjectRepository
   }
 
   async updateProject(id:string, data: UpdateProjectDto) :Promise<Project>{
+
     const project = this.getProjectById(id);
+
     if(!project){
         throw new HttpException('Project does not exist',404);
     }
     await this.update({uuid:id},data)
     const updated = this.getProjectById(id);
+
     return updated;
   }
 

@@ -21,8 +21,8 @@ export class ProjectService {
     return await this.projectRepository.saveProject(projectDto);
   }
 
-  async updateProject(projectId: string, updateProjectDto : UpdateProjectDto) : Promise<Project>{
-    return await this.projectRepository.updateProject(projectId,updateProjectDto)
+  async updateProject(uuid: string, updateProjectDto : UpdateProjectDto) : Promise<Project>{
+    return await this.projectRepository.updateProject(uuid,updateProjectDto)
   }
 
   async removeProject(projectId:string) : Promise<void>{

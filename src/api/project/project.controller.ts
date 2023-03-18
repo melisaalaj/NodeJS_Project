@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -16,6 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Public } from '../../common/decorators/public.decorator';
 import { CreateProjectDto } from './dtos/create-project.dto';
+import { UpdateProjectDto } from './dtos/update-project.dto';
 
 @UseGuards(new RolesGuard())
 @ApiTags('Project')
@@ -40,16 +40,13 @@ export class ProjectController {
   //@Roles(UserRoles.ADMIN)
   @Public()
   @Put(':id')
-  async updateProject(
-    @Param('id', ParseIntPipe) id: string,
-    @Body() project: CreateProjectDto,
-  ): Promise<Project> {
-    return await this.projectService.updateProject(id, project);
+  async updateProject(@Param('id') id:string , @Body() data:UpdateProjectDto) :Promise<Project>{
+    return await this.projectService.updateProject(id,data);
   }
 
   @Public()
-    @Delete(':id')
-    async removeProject(@Param('id') id:string) : Promise<void>{
-      return await this.projectService.removeProject(id);
-    }
+  @Delete(':id')
+  async removeProject(@Param('id') id:string) : Promise<void>{
+    return await this.projectService.removeProject(id);
+  }
 }
