@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -16,7 +17,6 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Public } from '../../common/decorators/public.decorator';
 import { CreateProjectDto } from './dtos/create-project.dto';
 
-
 @UseGuards(new RolesGuard())
 @ApiTags('Project')
 @Controller('Project')
@@ -29,9 +29,9 @@ export class ProjectController {
   async getProject(): Promise<Project[]> {
     return await this.projectService.getProject();
   }
-//
- // @Roles(UserRoles.ADMIN)
- @Public()
+
+  //@Roles(UserRoles.ADMIN)
+  @Public()
   @Post()
   async createProject(@Body() projectDto: CreateProjectDto): Promise<Project> {
     return await this.projectService.createProject(projectDto);
@@ -41,9 +41,15 @@ export class ProjectController {
   @Public()
   @Put(':id')
   async updateProject(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: string,
     @Body() project: CreateProjectDto,
   ): Promise<Project> {
     return await this.projectService.updateProject(id, project);
   }
+
+  @Public()
+    @Delete(':id')
+    async removeProject(@Param('id') id:string) : Promise<void>{
+      return await this.projectService.removeProject(id);
+    }
 }

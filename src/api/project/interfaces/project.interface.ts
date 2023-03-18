@@ -1,10 +1,17 @@
 /* eslint-disable prettier/prettier */
 import { IBaseCustomRepository } from '../../../common/db/customBaseRepository/interfaces/BaseCustomRepository.interface';
 import { CreateProjectDto } from '../dtos/projects.dto';
+import { UpdateProjectDto } from '../dtos/update-project.dto';
 import { Project } from '../entities/project.entity';
 
 export interface IProjectRepository extends IBaseCustomRepository<Project> {
-  getProject(): Promise<Project[]>;
-  saveProject(project: CreateProjectDto);
-  updateProject(id: number, project: CreateProjectDto): Promise<Project>;
+    getProject() : Promise<Project[]>
+
+    createProject(data: CreateProjectDto) : Promise<Project>
+
+    getProjectById(projectId:string):Promise<Project>
+    
+    updateProject(id:string, data:UpdateProjectDto) :Promise<Project>
+
+    removeProject(projectId: string): Promise<void> 
 }
