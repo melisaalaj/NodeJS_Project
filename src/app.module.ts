@@ -17,6 +17,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { ProjectModule } from './api/project/project.module';
 import { RoleModule } from './api/role/role.module';
 import { TaskModule } from './api/task/task.module';
+import { ReportModule } from './api/report/report.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { TaskModule } from './api/task/task.module';
     ProjectModule,
     RoleModule,
     TaskModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [

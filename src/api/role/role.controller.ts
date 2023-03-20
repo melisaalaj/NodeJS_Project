@@ -44,6 +44,7 @@ export class RoleController {
   async findOne(@Param('id') id: string) {
     return await this.roleService.findOne(id);
   }
+  
   @Roles(UserRoles.ADMIN)
   @Put(':id')
   async update(@Param('id') id: string, @Body() data: UpdateRoleDto) {
