@@ -29,4 +29,8 @@ export class ProjectService {
   async removeProject(projectId: string): Promise<void> {
     return await this.projectRepository.removeProject(projectId);
   }
+
+  async addUserToProject(projectId:string, userId: string) :Promise<void>{
+    return await this.projectRepository.addUserToProject(projectId,userId)
+  }
 }
