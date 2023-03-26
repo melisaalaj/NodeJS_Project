@@ -56,11 +56,4 @@ export class ProjectController {
     return await this.projectService.removeProject(id);
   }
 
-  @Post(':projectId')
-    addUserToProject(
-    @Param('projectId') projectId: string,
-    @Body('userIds') userIds: string[],
-  ): Promise<Project> {
-    return this.projectService.assignUsersToProject(projectId, userIds);
-  }
 }

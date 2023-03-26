@@ -30,23 +30,4 @@ export class ProjectService {
   async removeProject(projectId: string): Promise<void> {
     return await this.projectRepository.removeProject(projectId);
   }
-
-  async assignUsersToProject(
-    projectId: string,
-    userId: string[],
-  ): Promise<Project> {
-    const project = await this.projectRepository.findOne({
-      where: {
-        uuid: projectId,
-      },
-      relations: ['users'],
-    });
-    if (!userId || userId.length === 0) {
-      return project;
-    }
-    const users = await this.userService.findUsersByIds(userId);
-    project.users = [...project.users, ...users];
-    await this.projectRepository.createProject(project);
-    return project;
-  }
 }

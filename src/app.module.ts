@@ -18,7 +18,6 @@ import { ProjectModule } from './api/project/project.module';
 import { RoleModule } from './api/role/role.module';
 import { TaskModule } from './api/task/task.module';
 import { ReportModule } from './api/report/report.module';
-import { MediaModule } from './api/media/media.module';
 
 @Module({
   imports: [
@@ -53,7 +52,6 @@ import { MediaModule } from './api/media/media.module';
     RoleModule,
     TaskModule,
     ReportModule,
-    MediaModule,
   ],
   controllers: [AppController],
   providers: [
