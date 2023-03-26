@@ -43,7 +43,7 @@ export class TaskRepository
   }
 
   async removeTask(taskId: string): Promise<void> {
-    const task = await this.findOneBy({uuid: taskId})
+    const task = await this.findOneBy({ uuid: taskId });
     await this.delete(task.id);
   }
 }

@@ -5,16 +5,20 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
 import { IUserService } from './interfaces/user.service.interface';
 import { PermissinDto } from './dtos/permission.dto';
-import { UnprocessableEntityException } from '@nestjs/common/exceptions';
+import {
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common/exceptions';
 import { ForgotPasswordDto, ResetPasswordDto } from './dtos/password-reset.dto';
 import { PasswordReset } from './entities/reset-password.entity';
 import { hashDataBrypt } from '../../services/providers';
 import { randomBytes } from 'crypto';
 import { UserRepository } from './repository/user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectEventEmitter } from 'nest-emitter';
 import EventEmitter from 'events';
+import axios from 'axios';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -24,12 +28,6 @@ export class UserService implements IUserService {
     private passwordRepository: Repository<PasswordReset>,
     @InjectEventEmitter() private readonly emitter: EventEmitter,
   ) {}
-
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    return await this.userRepository.save(
-      this.userRepository.create(createUserDto),
-    );
-  }
 
   async findOne(userId: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ uuid: userId });
@@ -69,6 +67,14 @@ export class UserService implements IUserService {
     }
     user.permissions += permissionDto.permission;
     await this.userRepository.save(user);
+  }
+
+  async findUsersByIds(userIds: string[]): Promise<User[]> {
+    const users = this.userRepository.find({
+      where: { uuid: In(userIds) },
+    });
+    if (!users) throw new NotFoundException();
+    return users;
   }
 
   async removePermission(
@@ -142,5 +148,24 @@ export class UserService implements IUserService {
 
     await this.userRepository.save(user);
     await this.passwordRepository.delete({ user: user });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const avatar = await this.generateImage(50, 50);
+    const data = { ...createUserDto, avatar };
+    return await this.userRepository.save(this.userRepository.create(data));
+  }
+
+  async generateImage(width, height) {
+    const url = 'https://random.imagecdn.app/' + width + '/' + height;
+
+    try {
+      const response = await axios(url, { responseType: 'arraybuffer' });
+      const result = Buffer.from(response.data, 'binary').toString('base64');
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 }

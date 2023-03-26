@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-
 import { Project } from 'src/api/project/entities/project.entity';
 import { User } from 'src/api/user/entities/user.entity';
 import {

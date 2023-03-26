@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Project } from 'src/api/project/entities/project.entity';
+import { User } from 'src/api/user/entities/user.entity';
 import { AuditEntity } from 'src/common/db/customBaseEntites/AuditEntity';
 import { Column, Entity, ManyToOne} from 'typeorm';
 import { Status } from '../enums/status.enum';
@@ -33,4 +34,7 @@ export class Task extends AuditEntity{
 
     @ManyToOne(() => Project, project => project.tasks)
     project: Project;
+
+    @ManyToOne(() => User, user => user.tasks)
+    user: User;
 }

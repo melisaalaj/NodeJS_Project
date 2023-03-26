@@ -16,6 +16,8 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Public } from '../../common/decorators/public.decorator';
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserRoles } from '../user/enums/roles.enum';
 
 @UseGuards(new RolesGuard())
 @ApiTags('Project')
@@ -23,30 +25,42 @@ import { UpdateProjectDto } from './dtos/update-project.dto';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  //@Roles(UserRoles.ADMIN)
+  @Roles(UserRoles.ADMIN)
   @Public()
   @Get()
   async getProject(): Promise<Project[]> {
     return await this.projectService.getProject();
   }
 
-  //@Roles(UserRoles.ADMIN)
+  @Roles(UserRoles.ADMIN)
   @Public()
   @Post()
   async createProject(@Body() projectDto: CreateProjectDto): Promise<Project> {
     return await this.projectService.createProject(projectDto);
   }
 
-  //@Roles(UserRoles.ADMIN)
+  @Roles(UserRoles.ADMIN)
   @Public()
   @Put(':id')
-  async updateProject(@Param('id') id:string , @Body() data:UpdateProjectDto) :Promise<Project>{
-    return await this.projectService.updateProject(id,data);
+  async updateProject(
+    @Param('id') id: string,
+    @Body() data: UpdateProjectDto,
+  ): Promise<Project> {
+    return await this.projectService.updateProject(id, data);
   }
 
+  @Roles(UserRoles.ADMIN)
   @Public()
   @Delete(':id')
-  async removeProject(@Param('id') id:string) : Promise<void>{
+  async removeProject(@Param('id') id: string): Promise<void> {
     return await this.projectService.removeProject(id);
+  }
+
+  @Post(':projectId')
+    addUserToProject(
+    @Param('projectId') projectId: string,
+    @Body('userIds') userIds: string[],
+  ): Promise<Project> {
+    return this.projectService.assignUsersToProject(projectId, userIds);
   }
 }
