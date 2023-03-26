@@ -4,13 +4,12 @@ import { ProjectRepository } from './repository/project.repository';
 import { Project } from './entities/project.entity';
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
-import { UserService } from "../user/user.service";
+
 
 @Injectable()
 export class ProjectService {
   
-  constructor(private readonly projectRepository: ProjectRepository,
-    private readonly userService: UserService,) {}
+  constructor(private readonly projectRepository: ProjectRepository) {}
 
   async getProject(): Promise<Project[]> {
     return await this.projectRepository.getProject();
