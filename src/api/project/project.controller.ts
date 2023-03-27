@@ -25,21 +25,21 @@ import { UserRoles } from '../user/enums/roles.enum';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Roles(UserRoles.ADMIN)
+  //Roles(UserRoles.ADMIN)
   @Public()
   @Get()
   async getProject(): Promise<Project[]> {
     return await this.projectService.getProject();
   }
 
-  @Roles(UserRoles.ADMIN)
+  //@Roles(UserRoles.ADMIN)
   @Public()
   @Post()
   async createProject(@Body() projectDto: CreateProjectDto): Promise<Project> {
     return await this.projectService.createProject(projectDto);
   }
 
-  @Roles(UserRoles.ADMIN)
+  //@Roles(UserRoles.ADMIN)
   @Public()
   @Put(':id')
   async updateProject(
@@ -49,7 +49,7 @@ export class ProjectController {
     return await this.projectService.updateProject(id, data);
   }
 
-  @Roles(UserRoles.ADMIN)
+  //@Roles(UserRoles.ADMIN)
   @Public()
   @Delete(':id')
   async removeProject(@Param('id') id: string): Promise<void> {

@@ -6,12 +6,10 @@ import {
   Body,
   Param,
   Delete,
-  UseGuards,
   Put,
   UseInterceptors,
 } from '@nestjs/common';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { RolesGuard } from '../../common/guards/roles.guard';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/role.dto';
 import { UpdateRoleDto } from './dto/role.dto';
@@ -19,10 +17,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PaginationInterceptor } from '../../common/interceptors/pagination.interceptor';
 import { UserRoles } from '../user/enums/roles.enum';
 
-@UseGuards(new RolesGuard())
 @ApiBearerAuth()
 @ApiTags('Roles')
-@Controller('api/roles')
+@Controller('/roles')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 

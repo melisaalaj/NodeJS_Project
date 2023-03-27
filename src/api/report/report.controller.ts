@@ -17,7 +17,7 @@ import { ReportService } from './report.service';
 
 @ApiBearerAuth()
 @ApiTags('Reports')
-@Controller('api/reports')
+@Controller('/reports')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
